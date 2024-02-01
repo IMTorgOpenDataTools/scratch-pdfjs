@@ -6,8 +6,8 @@
 These steps (saved in each commit) increase in functionality sophistication:
 
 * `7ab37bd` Basic setup with Viewer
-* Document file upload: adds error handling
-* Ingest from Blob (File): as if from backend
+* `56fd043` Document file upload: adds error handling
+* Save, then Load from ('Uint8Array'): as if from backend
 * 
 
 

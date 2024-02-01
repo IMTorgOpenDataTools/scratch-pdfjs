@@ -1,4 +1,14 @@
 <template>
+
+    <form name="uploadForm">
+        <input id="selectInput" @change="selectInput" type="file" accept=".pdf" single />
+        <br/>
+        <label for="fileNum">Selected files:</label>
+        <output id="fileNum">0</output>
+        <br/>
+      <input @click="getPdf" value="Upload file" type="button"/>
+    </form>
+
     <div id="pageContainer">
         <div id="viewer" class="pdfViewer"></div>
     </div>
@@ -26,13 +36,23 @@ export default {
     //props: { docPath: String },
     data() {
         return {
+            docBlob: null,
             docPath: "./src/assets/compressed.tracemonkey-pldi-09.pdf"
         }
-    },
+    },/*
     async mounted() {
         await this.getPdf();
-    },
+    },*/
     methods: {
+        selectInput(){
+            const selectInput = document.getElementById("selectInput")
+            document.getElementById("fileNum").textContent = selectInput.files.length
+            this.docBlob = null
+            this.docPath = URL.createObjectURL(selectInput.files[0])
+        },
+
+
+
         async getPdf() {
             let container = document.getElementById("pageContainer");
 
@@ -99,6 +119,16 @@ export default {
                 return pdf
             }, function (reason) {
                 console.error(`error from: ${reason}`)
+            })
+            let blob = await pdf.getData()
+            const docInitParams = {data: blob}
+            this.docBlob = docInitParams
+            console.log(`Save pdf object ('Uint8Array') to storage: ${this.docBlob}...`)
+            console.log(`...then read back the object, later: ${blob}`)
+            pdfjsLib.getDocument(docInitParams).promise.then(function(pdfFromRaw){
+                
+                const numPages = pdfFromRaw.numPages
+                console.log(`Saved document ('Uint8Array') STILL contains ${numPages} pages from saved `)
             })
 
             console.log(`PDF Document proxy: ${pdf}`)
