@@ -1,6 +1,18 @@
 
 
 
+# Pdfjs Steps
+
+These steps (saved in each commit) increase in functionality sophistication:
+
+* `7ab37bd` Basic setup with Viewer
+* Document file upload: adds error handling
+* Ingest from Blob (File): as if from backend
+* 
+
+
+
+
 
 # Format code
 

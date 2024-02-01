@@ -94,9 +94,20 @@ export default {
                 cMapUrl: CMAP_URL,
                 cMapPacked: CMAP_PACKED,
                 enableXfa: ENABLE_XFA,
-            }).promise;
+            }).promise.then(function(pdf){
+                console.log(`pdf loaded: ${pdf}`)
+                return pdf
+            }, function (reason) {
+                console.error(`error from: ${reason}`)
+            })
+
             console.log(`PDF Document proxy: ${pdf}`)
             console.log(`Document contains ${pdf.numPages} pages`)
+            const pageNumber = 1
+            pdf.getPage(pageNumber).then(function(page) {
+                console.log(`Page loaded: ${page}`)
+            })
+
             await pdfViewer.setDocument(pdf);
         },
     },
