@@ -1,6 +1,7 @@
 <template>
     <input @click="search" value="Search text" type="button"/>
-    <input @click="test" value="TEST" type="button"/>
+    <input @click="saveDoc" value="Save file" type="button"/>
+    <input @click="loadDoc" value="Load prev file" type="button"/>
     <div id="pageContainer">
         <iframe 
             id="pdf-js-viewer"
@@ -41,6 +42,22 @@ export default {
                 highlightAll: true
             })
         },
+        async saveDoc(){
+            //get document properties
+            const app = document.getElementById('pdf-js-viewer').contentWindow.PDFViewerApplication
+            const doc = await app.pdfDocument
+            console.log(`Get numPages: ${doc.numPages}`)
+            const blob = await doc.getData()
+            this.docBlob = blob
+            console.log(`Get Uint8Array (first 50...): ${blob.slice(0,50)}`)
+        },
+        async loadDoc(){
+            //load document from typed array
+            //expected workflow: click save doc, open a new document (manually) using `Open File` button, then click load doc 
+            const app = document.getElementById('pdf-js-viewer').contentWindow.PDFViewerApplication
+            await app.open({data: this.docBlob})
+
+        }
 
     }
 }

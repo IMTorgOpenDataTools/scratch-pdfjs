@@ -20,7 +20,8 @@ Uses the [latest stable release](https://mozilla.github.io/pdf.js/getting_starte
 
 * `fa70a6e` Basic setup with `IFrameViewer`
 * `9832d80` Search for text in Viewer and highlight the text
-* Customize Viewer tool bar with `customToolbar.js`
+* `fb33eef` Customize Viewer tool bar with `customToolbar.js`
+* Save, then Load from ('Uint8Array'): as if from backend
 * Extract selected text
 * Extract selected image / diagram
 * Improve whole document text extraction
