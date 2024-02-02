@@ -142,6 +142,9 @@ export default {
             pdf.getPage(pageNumber).then(function(page) {
                 console.log(`Page loaded: ${page}`)
             })
+            const page2 = await pdf.getPage(2)
+            const page2text = await page2.getTextContent()
+            console.log(`Page-2 text content: ${page2text}`)
 
             await pdfViewer.setDocument(pdf)
         },
