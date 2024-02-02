@@ -1,6 +1,6 @@
 <script setup>
-//import HelloWorld from './components/HelloWorld.vue'
-import PdfViewer from './components/PdfViewer.vue'
+//import PdfViewer from './components/PdfViewer.vue'
+import PdfViewer from './components/IFrameViewer.vue'
 </script>
 
 <template><!--

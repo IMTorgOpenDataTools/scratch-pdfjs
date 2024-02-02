@@ -8,6 +8,7 @@
         <br/>
       <input @click="getPdf" value="Upload file" type="button"/>
     </form>
+    <input @click="search" value="Search text" type="button"/>
 
     <div id="pageContainer">
         <div id="viewer" class="pdfViewer"></div>
@@ -37,18 +38,23 @@ export default {
     data() {
         return {
             docBlob: null,
-            docPath: "./src/assets/compressed.tracemonkey-pldi-09.pdf"
+            docPath: "./src/public/pdf/compressed.tracemonkey-pldi-09.pdf",
+
+            pdf: null,
+            pdfViwer: null
         }
-    },/*
-    async mounted() {
-        await this.getPdf();
-    },*/
+    },
     methods: {
         selectInput(){
             const selectInput = document.getElementById("selectInput")
             document.getElementById("fileNum").textContent = selectInput.files.length
             this.docBlob = null
             this.docPath = URL.createObjectURL(selectInput.files[0])
+        },
+        search(){
+            //this.pdfViewer.eventBus.on('pagesinit', function(){this.pdfViewer.eventBus.dispatch('find', {query: 'trace'})  })
+            //this.pdfViewer.eventBus.dispatch('find', {query: 'trace', highlightAll:true})
+            // TODO: HOW TO DO THIS ^^^ ???
         },
 
 
@@ -57,7 +63,7 @@ export default {
             let container = document.getElementById("pageContainer");
 
 
-            //getDocument
+            // Args getDocument
             // Some PDFs need external cmaps.
             const CMAP_URL = "pdfjs-dist/cmaps/"
             const CMAP_PACKED = true
@@ -68,7 +74,7 @@ export default {
             const SEARCH_FOR = "Trace";     //test term
 
 
-            //PdfViewer
+            // Args PdfViewer
             const eventBus = new pdfjsViewer.EventBus();
             // (Optionally) enable hyperlinks within PDF files.
             const pdfLinkService = new pdfjsViewer.PDFLinkService({
@@ -86,7 +92,8 @@ export default {
             });
 
 
-            let pdfViewer = new pdfjsViewer.PDFViewer({
+
+            let pdfViewer = new pdfjsViewer.PDFSinglePageViewer({     //new pdfjsViewer.PDFViewer({
                 container,
                 eventBus,
 
@@ -104,8 +111,6 @@ export default {
                 eventBus.dispatch("find", { type: "", query: SEARCH_FOR }, );
               }
             });
-
-
 
 
 
@@ -133,12 +138,12 @@ export default {
 
             console.log(`PDF Document proxy: ${pdf}`)
             console.log(`Document contains ${pdf.numPages} pages`)
-            const pageNumber = 1
+            const pageNumber = 2
             pdf.getPage(pageNumber).then(function(page) {
                 console.log(`Page loaded: ${page}`)
             })
 
-            await pdfViewer.setDocument(pdf);
+            await pdfViewer.setDocument(pdf)
         },
     },
 };

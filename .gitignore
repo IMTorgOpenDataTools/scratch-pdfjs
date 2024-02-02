@@ -1,3 +1,8 @@
+# Custom
+client/src/public/pdfjs-dist/
+
+
+
 # Logs
 logs
 *.log
