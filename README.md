@@ -12,7 +12,7 @@ Uses the node package, directly, with `npm install pdfjs-dist`.
 * `7ab37bd` Basic setup with Viewer
 * `56fd043` Document file upload: adds error handling
 * `b08cee2` Save, then Load from ('Uint8Array'): as if from backend
-* Extract all text
+* `0d8faaa` Extract all text
 
 
 ### `IFrameViewer.vue`
@@ -23,8 +23,10 @@ Uses the [latest stable release](https://mozilla.github.io/pdf.js/getting_starte
 * `9832d80` Search for text in Viewer and highlight the text
 * `fb33eef` Customize Viewer tool bar with `customToolbar.js`
 * `128b934` Save, then Load from ('Uint8Array'): as if from backend
+* Move to selected page
 * Extract selected text
 * Extract selected image / diagram
+* Highlight parts of the document
 * Improve whole document text extraction
 
 

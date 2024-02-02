@@ -2,6 +2,7 @@
     <input @click="search" value="Search text" type="button"/>
     <input @click="saveDoc" value="Save file" type="button"/>
     <input @click="loadDoc" value="Load prev file" type="button"/>
+    <input @click="chgToPg3" value="Change to `Contents` Page" type="button"/>
     <div id="pageContainer">
         <iframe 
             id="pdf-js-viewer"
@@ -56,7 +57,10 @@ export default {
             //expected workflow: click save doc, open a new document (manually) using `Open File` button, then click load doc 
             const app = document.getElementById('pdf-js-viewer').contentWindow.PDFViewerApplication
             await app.open({data: this.docBlob})
-
+        },
+        chgToPg3(){
+            const app = document.getElementById('pdf-js-viewer').contentWindow.PDFViewerApplication
+            app.page = 3
         }
 
     }

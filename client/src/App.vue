@@ -1,6 +1,6 @@
 <script setup>
-import PdfViewer from './components/PdfViewer.vue'
-//import PdfViewer from './components/IFrameViewer.vue'
+//import PdfViewer from './components/PdfViewer.vue'
+import PdfViewer from './components/IFrameViewer.vue'
 </script>
 
 <template><!--
