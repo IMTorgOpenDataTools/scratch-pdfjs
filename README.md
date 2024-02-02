@@ -19,7 +19,7 @@ Uses the node package, directly, with `npm install pdfjs-dist`.
 Uses the [latest stable release](https://mozilla.github.io/pdf.js/getting_started/#download), which is unzipped into the `public/pdfjs-dist/` folder.  Here, and `<iframe>` sources the `public/pdfjs-dist/web/viewer.html` file.
 
 * `fa70a6e` Basic setup with `IFrameViewer`
-* Search for text in Viewer and highlight the text
+* `9832d80` Search for text in Viewer and highlight the text
 * Customize Viewer tool bar with `customToolbar.js`
 * Extract selected text
 * Extract selected image / diagram
