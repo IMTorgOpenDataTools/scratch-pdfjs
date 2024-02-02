@@ -40,7 +40,10 @@ export default {
             const app = document.getElementById('pdf-js-viewer').contentWindow.PDFViewerApplication
             app.pdfViewer.eventBus.dispatch('find', {
                 query: 'Sample PDF', 
-                highlightAll: true
+                highlightAll: true,
+                caseSensitive: false,
+                findPrevious: undefined,
+                phraseSearch: true
             })
         },
         async saveDoc(){
@@ -61,6 +64,7 @@ export default {
         chgToPg3(){
             const app = document.getElementById('pdf-js-viewer').contentWindow.PDFViewerApplication
             app.page = 3
+            //app.zoomIn(5)
         }
 
     }
