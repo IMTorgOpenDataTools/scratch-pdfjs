@@ -33,6 +33,14 @@ export default {
         }
     },
     methods: {
+        search(){
+            //search and highlight text
+            const app = document.getElementById('pdf-js-viewer').contentWindow.PDFViewerApplication
+            app.pdfViewer.eventBus.dispatch('find', {
+                query: 'Sample PDF', 
+                highlightAll: true
+            })
+        },
 
     }
 }
