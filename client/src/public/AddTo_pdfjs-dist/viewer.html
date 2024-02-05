@@ -28,8 +28,8 @@ See https://github.com/adobe-type-tools/cmap-resources
     <title>PDF.js viewer</title>
 
 
-    <!--  YOUR CUSTOMIZED TOOLBAR HERE  -->
-    <script src="customToolbar.js"></script>
+    <!--  YOUR CUSTOMIZED TOOLBAR HERE  
+    <script src="customToolbar.js"></script>-->
 
      
 <!-- This snippet is used in production (included from viewer.html) -->
@@ -212,6 +212,7 @@ See https://github.com/adobe-type-tools/cmap-resources
 
             <div class="horizontalToolbarSeparator"></div>
 
+            <!-- IMPORTANT FOR SELECTION  -->
             <div id="cursorToolButtons" role="radiogroup">
               <button id="cursorSelectTool" class="secondaryToolbarButton toggled" title="Enable Text Selection Tool" tabindex="60" data-l10n-id="pdfjs-cursor-text-select-tool-button" role="radio" aria-checked="true">
                 <span data-l10n-id="pdfjs-cursor-text-select-tool-button-label">Text Selection Tool</span>

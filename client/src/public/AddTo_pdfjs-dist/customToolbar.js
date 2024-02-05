@@ -46,8 +46,8 @@ let sheet = (function() {
     removeElement('presentationMode')
     removeElement('openFile')
     removeElement('print')
-    removeElement('download')
-    removeElement('viewBookmark')
+    //removeElement('download')
+    //removeElement('viewBookmark')
    }
    function changeIcon(elemID, iconUrl){
     let element = document.getElementById(elemID);
