@@ -24,8 +24,8 @@ Uses the [latest stable release](https://mozilla.github.io/pdf.js/getting_starte
 * `fb33eef` Customize Viewer tool bar with `customToolbar.js`
 * `128b934` Save, then Load from ('Uint8Array'): as if from backend
 * `aee0da1` Move to selected page and zoom
-* `` Extract manually selected text
-* Highlight selected text in the document
+* `5cd5854` Extract manually selected text
+* `5cd5854` Highlight selected text in the document
 * Extract manually selected image / diagram
 * Improve whole document text extraction
 

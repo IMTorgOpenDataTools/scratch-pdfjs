@@ -3,7 +3,11 @@
     <input @click="saveDoc" value="Save file" type="button"/>
     <input @click="loadDoc" value="Load prev file" type="button"/>
     <input @click="chgToPg3" value="Change to `Contents` Page" type="button"/>
-    <input @click="highlightText" value="Extract Text" type="button"/>
+    <br/>
+    <input @click="extractTextRadial" :value="'Select and Extract Text (' + this.extractText +')'" type="button"/>
+    <input @click="highlightText" value="Hightlight Selected Text" type="button"/>
+    <br/>
+    <input @click="extractImageRadial" :value="'Select and Extract Image (' + this.extractImage +')'" type="button"/>
     <div id="pageContainer">
         <iframe
             ref="frame"
@@ -32,6 +36,9 @@ export default {
             pathViewer: './src/public/pdfjs-dist/web/viewer.html',
             query: '?file=',
             pathFile: '../../pdf/sample.pdf#search=Simple',    //must be relative to `viewer.html` location
+
+            extractText: false,
+            extractImage: false
         }
     },
     computed:{
@@ -43,12 +50,21 @@ export default {
         // Listener Logic
         //listener and selector for user-selected text
         iframeLoaded() {
-            const app = document.getElementById('pdf-js-viewer').contentWindow.document//.PDFViewerApplication
-            app.addEventListener('selectionchange', () => {
-                console.log(  this.getSelectedText()  )
-            })
+            const app = document.getElementById('pdf-js-viewer').contentWindow.document
         },
-        getSelectedText() {
+        extractTextRadial(){
+            const app = document.getElementById('pdf-js-viewer').contentWindow.document
+            this.extractText = !this.extractText
+            if(this.extractText){
+                app.addEventListener('selectionchange', this.logText)
+            }else{
+                app.removeEventListener('selectionchange', this.logText)
+            }
+        },
+        logText(e){
+            console.log(this.getSelectedText(e))
+        },
+        getSelectedText(e) {
             const iframeWindow = document.getElementById('pdf-js-viewer').contentWindow.document
             if (iframeWindow) {
                   return iframeWindow.getSelection().toString();
@@ -58,12 +74,57 @@ export default {
                }
                return '';
         },
-        getSelectedImage(){
-            const iframeWindow = document.getElementById('pdf-js-viewer').contentWindow.document
+        extractImageRadial(){
+            // TODO: this fails !!!
+            //google: pdfjs pdfviewer area selector
+            //ref: https://stackoverflow.com/questions/17703906/use-a-canvas-to-select-a-portion-of-a-pdf-document?rq=3
+            //ref: https://stackoverflow.com/questions/49605369/highlight-area-in-pdfjs-canvas-based-on-native-pdf-coordinates
+            //ref: https://stackoverflow.com/questions/55411493/pdf-js-with-canvas-draw-draw-rectangle-in-canvas-with-pdf-loaded-using-pdf-js?noredirect=1&lq=1
+            //ref: https://stackoverflow.com/questions/58590845/draw-rectangle-in-canvas-with-loaded-pdf-file-using-pdf-js?noredirect=1&lq=1
+            this.extractImage = !this.extractImage
+
+            const iframeWindow = document.getElementById('pdf-js-viewer').contentWindow
             const app = document.getElementById('pdf-js-viewer').contentWindow.PDFViewerApplication
             const pageIndex = app.page - 1
+
             const _page = app.pdfViewer._pages[pageIndex]
-            _page.canvas.getContext('2d').getImageData(1,1,1,1)     //x, y, width, height
+            const canvas = _page.canvas.getContext("2d")
+            //var x1 = 0, y1 = 0, x2 = 0, y2 = 0
+            if(this.extractImage){
+                iframeWindow.addEventListener('onmousedown', this.onmousechange)
+                iframeWindow.addEventListener('onmouseup', this.onmousechange)
+            }else{
+                iframeWindow.removeEventListener('onmousedown', this.onmousechange)
+                iframeWindow.removeEventListener('onmouseup', this.onmousechange)
+            }
+        },
+
+            
+        onmousechange(e) {
+                //div.hidden = 0;
+                const tmp = window.getSelection().toString()
+                console.log(tmp)
+                let x1 = 0
+                let y1 = 0
+                let x2 = e.clientX;
+                let y2 = e.clientY;
+                console.log(`x1:${x1},y1: ${y1}    x2:${x2},y2: ${y2}`)
+                //canvas.removeEventListener('onmousedown', (e) => {onmousedown(e)})
+                //reCalc();
+                /*
+            }
+            onmousemove = function(e) {
+                x2 = e.clientX;
+                y2 = e.clientY;
+                console.log(`x1:${x1},y1: ${y1}    x2:${x2},y2: ${y2}`)
+                canvas .removeEventListener('onmousemove', (e) => {onmousemove(e)})
+                //reCalc();
+            }*
+            function onmouseup(e) {
+                //div.hidden = 1;
+                console.log(`x1:${x1},y1: ${y1}    x2:${x2},y2: ${y2}`)
+                canvas.removeEventListener('onmouseup', (e) => {onmouseup(e)})
+            }*/
 
         },
 
@@ -74,7 +135,7 @@ export default {
             //search and highlight text
             const app = document.getElementById('pdf-js-viewer').contentWindow.PDFViewerApplication
             app.pdfViewer.eventBus.dispatch('find', {
-                query: 'Sample PDF', 
+                query: '1999', 
                 highlightAll: true,
                 caseSensitive: false,
                 findPrevious: undefined,
@@ -102,6 +163,10 @@ export default {
             app.page = 3
             //app.zoomIn(5)
         },
+
+
+
+        // Logic
         highlightText(){
             const selected = this.getSelectionCoords()
             this.showHighlight(selected)
@@ -149,11 +214,22 @@ export default {
                 var el = createRectDiv([x1, y1, width, hight], highlightColor);
                 _page.textLayer.div.appendChild(el)
             }, this)
+        },
 
+        getExtractedImage(){
+            const app = document.getElementById('pdf-js-viewer').contentWindow.document//.PDFViewerApplication
 
+        },
+        getSelectedImage(){
+            //ref: https://stackoverflow.com/questions/13416800/how-to-generate-an-image-from-imagedata-in-javascript
+            //ref: https://stackoverflow.com/questions/923885/capture-html-canvas-as-gif-jpg-png-pdf?noredirect=1&lq=1
+            const iframeWindow = document.getElementById('pdf-js-viewer').contentWindow.document
+            const app = document.getElementById('pdf-js-viewer').contentWindow.PDFViewerApplication
+            const pageIndex = app.page - 1
+            const _page = app.pdfViewer._pages[pageIndex]
+            _page.canvas.getContext('2d').getImageData(1,1,1,1)     //x, y, width, height
 
-
-        }
+        },
     }
 }
 
@@ -175,20 +251,31 @@ function createRectDiv(boundBox, highlightColor){
 
 
 
+
+
 </script>
   
 <style>
 #pageContainer {
     position: absolute;
-    /*
-    overflow: auto;
-    
-    margin: auto;
-    width: 80%;*/
+}
+
+#div {
+    border: 1px dotted #000;
+    position: absolute;
 }
 
 /*
-div.page {
-    display: inline-block;
+#cloud_main_page{
+  width:400px;
+  height:400px;
+  
+  position:relative;
+}
+#pageContainer #pdf-js-viewer{	
+	position:absolute;
+	
+	background-color:rgba(6, 217, 160, 0.05);
+	border: 1px solid rgba(6, 217, 160, 0.3);	
 }*/
 </style>
